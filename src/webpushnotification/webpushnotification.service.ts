@@ -6,7 +6,7 @@ import { WebPushNotificationBatchDto } from './dto/webpushnotificationbatch.dto'
 export class WebpushnotificationService {
   sendNotificationToAllUsers(notification: WebPushNotificationDto) {
     if (this.generateResult()) {
-      return 'Notification sent successfully';
+      return { message: 'Notification sent successfully' };
     } else {
       throw new InternalServerErrorException({
         message: 'Notification failed to send',

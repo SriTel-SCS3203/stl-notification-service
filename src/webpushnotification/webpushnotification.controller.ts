@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, Post } from '@nestjs/common';
 import { WebpushnotificationService } from './webpushnotification.service';
 import { WebPushNotificationDto } from './dto/webpushnotification.dto';
 import { ApiBody, ApiConsumes, ApiOperation } from '@nestjs/swagger';
@@ -10,6 +10,7 @@ export class WebpushnotificationController {
     private readonly webpushnotificationService: WebpushnotificationService,
   ) {}
   @Post('send/single')
+  @HttpCode(200)
   @ApiConsumes('application/json')
   @ApiOperation({ summary: 'Send a single notification to all users' })
   @ApiBody({
@@ -23,6 +24,7 @@ export class WebpushnotificationController {
     );
   }
   @Post('send/multiple')
+  @HttpCode(200)
   @ApiConsumes('application/json')
   @ApiOperation({ summary: 'Send multiple notifications to all users' })
   @ApiBody({

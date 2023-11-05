@@ -1,5 +1,5 @@
 import { MailerService as Mailer } from '@nestjs-modules/mailer';
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { EmailDto } from './dto/email.dto';
 import { EmailBatchDto } from './dto/emailBatch.dto';
 
@@ -7,32 +7,38 @@ import { EmailBatchDto } from './dto/emailBatch.dto';
 export class EmailService {
   constructor(private readonly mailerMain: Mailer) {}
 
-  async sendSingleEmail(email: EmailDto) {
-    return await this.mailerMain
-      .sendMail({
-        to: email.to,
-        subject: email.subject,
-        text: email.body,
-      })
-      .then((success) => {
-        console.log(success);
+  sendSingleEmail(email: EmailDto) {
+    if (this.generateResult()) {
+      return { message: 'Email sent successfully' };
+    } else {
+      throw new InternalServerErrorException({
+        message: 'Email failed to send',
+        email,
       });
+    }
   }
 
-  async sendMultipleEmails(emails: EmailBatchDto) {
+  sendMultipleEmails(emails: EmailBatchDto) {
     const failedEmails = [];
-    for (const email of emails.emails) {
-      await this.mailerMain
-        .sendMail({
-          to: email.to,
-          subject: email.subject,
-          text: email.body,
-        })
-        .catch((error) => {
-          console.log(error);
-          failedEmails.push(email.to);
-        });
+    emails.emails.forEach((email) => {
+      if (!this.generateResult()) {
+        failedEmails.push(email);
+      }
+    });
+    if (failedEmails.length > 0) {
+      return new InternalServerErrorException({
+        message: 'Some emails failed to send',
+        failedEmails,
+      });
+    } else {
+      return { message: 'All emails sent successfully' };
     }
-    return failedEmails;
+  }
+  generateResult() {
+    if (Math.random() < 0.9) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
