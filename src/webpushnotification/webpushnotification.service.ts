@@ -28,7 +28,27 @@ export class WebpushnotificationService {
         })
       : { message: 'All notifications sent successfully' };
   }
-
+  sendNotificationToAUser(notification: WebPushNotificationDto, id: string) {
+    if (this.generateResult()) {
+      return { message: 'Notification sent successfully' };
+    } else {
+      throw new InternalServerErrorException({
+        message: 'Notification failed to send',
+        notification,
+        id,
+      });
+    }
+  }
+  deleteANotification(id: string) {
+    if (this.generateResult()) {
+      return { message: 'Notification deleted successfully' };
+    } else {
+      throw new InternalServerErrorException({
+        message: 'Notification failed to delete',
+        id,
+      });
+    }
+  }
   generateResult() {
     if (Math.random() < 0.9) {
       return true;

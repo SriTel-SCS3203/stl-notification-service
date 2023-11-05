@@ -1,10 +1,18 @@
-import { Body, Controller, HttpCode, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  HttpCode,
+  Param,
+  Post,
+} from '@nestjs/common';
 import { WebpushnotificationService } from './webpushnotification.service';
 import { WebPushNotificationDto } from './dto/webpushnotification.dto';
 import {
   ApiBody,
   ApiConsumes,
   ApiOperation,
+  ApiParam,
   ApiResponse,
 } from '@nestjs/swagger';
 import { WebPushNotificationBatchDto } from './dto/webpushnotificationbatch.dto';
@@ -51,5 +59,48 @@ export class WebpushnotificationController {
     return this.webpushnotificationService.sendMultipleNotifications(
       notifications,
     );
+  }
+  @Post('send/single/:user_id')
+  @HttpCode(200)
+  @ApiConsumes('application/json')
+  @ApiOperation({ summary: 'Send a single notification to a user' })
+  @ApiParam({
+    name: 'user_id',
+    required: true,
+    description: 'The id of the user to send the notification to',
+  })
+  @ApiBody({
+    type: WebPushNotificationDto,
+    required: true,
+    isArray: false,
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Notification sent successfully',
+  })
+  sendNotificationToUser(
+    @Param('user_id') user_id: string,
+    @Body() notification: WebPushNotificationDto,
+  ) {
+    return this.webpushnotificationService.sendNotificationToAUser(
+      notification,
+      user_id,
+    );
+  }
+  @Delete('cancel/:notification_id')
+  @HttpCode(200)
+  @ApiConsumes('application/json')
+  @ApiOperation({ summary: 'Cancel a notification by id' })
+  @ApiParam({
+    name: 'notification_id',
+    required: true,
+    description: 'The id of the notification to delete',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Notification deleted successfully',
+  })
+  deleteNotification(@Param('notification_id') notification_id: string) {
+    return this.webpushnotificationService.deleteANotification(notification_id);
   }
 }
