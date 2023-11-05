@@ -1,7 +1,12 @@
 import { Body, Controller, HttpCode, Post } from '@nestjs/common';
 import { WebpushnotificationService } from './webpushnotification.service';
 import { WebPushNotificationDto } from './dto/webpushnotification.dto';
-import { ApiBody, ApiConsumes, ApiOperation } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiConsumes,
+  ApiOperation,
+  ApiResponse,
+} from '@nestjs/swagger';
 import { WebPushNotificationBatchDto } from './dto/webpushnotificationbatch.dto';
 
 @Controller('webpushnotification')
@@ -18,6 +23,10 @@ export class WebpushnotificationController {
     required: true,
     isArray: false,
   })
+  @ApiResponse({
+    status: 200,
+    description: 'Notification sent successfully',
+  })
   sendNotification(@Body() notification: WebPushNotificationDto) {
     return this.webpushnotificationService.sendNotificationToAllUsers(
       notification,
@@ -31,6 +40,10 @@ export class WebpushnotificationController {
     type: WebPushNotificationBatchDto,
     required: true,
     isArray: true,
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'All notifications sent successfully',
   })
   sendMultipleNotifications(
     @Body() notifications: WebPushNotificationBatchDto,

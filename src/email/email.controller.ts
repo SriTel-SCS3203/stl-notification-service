@@ -2,7 +2,7 @@ import { Body, Controller, HttpCode, Post } from '@nestjs/common';
 import { EmailService } from './email.service';
 import { EmailDto } from './dto/email.dto';
 import { EmailBatchDto } from './dto/emailBatch.dto';
-import { ApiBody, ApiOperation } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 @Controller('email')
 export class EmailController {
@@ -15,6 +15,10 @@ export class EmailController {
     required: true,
     isArray: false,
   })
+  @ApiResponse({
+    status: 200,
+    description: 'Email sent successfully',
+  })
   sendSingleEmail(@Body() email: EmailDto) {
     return this.emailService.sendSingleEmail(email);
   }
@@ -25,6 +29,10 @@ export class EmailController {
     type: EmailBatchDto,
     required: true,
     isArray: false,
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'All emails sent successfully',
   })
   sendMultipleEmail(@Body() emails: EmailBatchDto) {
     return this.emailService.sendMultipleEmails(emails);

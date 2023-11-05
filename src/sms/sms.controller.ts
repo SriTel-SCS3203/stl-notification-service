@@ -1,7 +1,7 @@
 import { Body, Controller, HttpCode, Post } from '@nestjs/common';
 import { SmsService } from './sms.service';
 import { SMSDto } from './dto/sms.dto';
-import { ApiBody, ApiOperation } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { SMSBatchDto } from './dto/smsbatch.dto';
 
 @Controller('sms')
@@ -15,6 +15,10 @@ export class SmsController {
     required: true,
     isArray: false,
   })
+  @ApiResponse({
+    status: 200,
+    description: 'SMS sent successfully',
+  })
   sendASMS(@Body() sms: SMSDto) {
     return this.smsService.sendASMS(sms);
   }
@@ -25,6 +29,10 @@ export class SmsController {
     type: SMSBatchDto,
     required: true,
     isArray: false,
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'All SMS sent successfully',
   })
   sendMultipleSMS(@Body() sms: SMSBatchDto) {
     return this.smsService.sendMultipleSMS(sms);
