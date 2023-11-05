@@ -28,7 +28,7 @@ export class WebpushnotificationController {
   @ApiConsumes('application/json')
   @ApiOperation({ summary: 'Send multiple notifications to all users' })
   @ApiBody({
-    type: WebPushNotificationDto,
+    type: WebPushNotificationBatchDto,
     required: true,
     isArray: true,
   })

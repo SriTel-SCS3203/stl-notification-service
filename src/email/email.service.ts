@@ -1,12 +1,9 @@
-import { MailerService as Mailer } from '@nestjs-modules/mailer';
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { EmailDto } from './dto/email.dto';
 import { EmailBatchDto } from './dto/emailBatch.dto';
 
 @Injectable()
 export class EmailService {
-  constructor(private readonly mailerMain: Mailer) {}
-
   sendSingleEmail(email: EmailDto) {
     if (this.generateResult()) {
       return { message: 'Email sent successfully' };
