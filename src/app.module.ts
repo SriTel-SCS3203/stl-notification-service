@@ -8,6 +8,8 @@ import { WebpushnotificationController } from './webpushnotification/webpushnoti
 import { WebpushnotificationModule } from './webpushnotification/webpushnotification.module';
 import { SmsController } from './sms/sms.controller';
 import { SmsModule } from './sms/sms.module';
+import { WebpushnotificationService } from './webpushnotification/webpushnotification.service';
+import { SmsService } from './sms/sms.service';
 @Module({
   imports: [EmailModule, WebpushnotificationModule, SmsModule],
   controllers: [
@@ -16,6 +18,6 @@ import { SmsModule } from './sms/sms.module';
     WebpushnotificationController,
     SmsController,
   ],
-  providers: [AppService, EmailService],
+  providers: [AppService, EmailService, WebpushnotificationService, SmsService],
 })
 export class AppModule {}

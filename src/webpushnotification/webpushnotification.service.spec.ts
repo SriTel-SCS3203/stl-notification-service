@@ -9,7 +9,9 @@ describe('WebpushnotificationService', () => {
       providers: [WebpushnotificationService],
     }).compile();
 
-    service = module.get<WebpushnotificationService>(WebpushnotificationService);
+    service = module.get<WebpushnotificationService>(
+      WebpushnotificationService,
+    );
   });
 
   it('should be defined', () => {
